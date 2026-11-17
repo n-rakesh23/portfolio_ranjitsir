@@ -34,6 +34,9 @@ export function BinaryRain({ reduced, className }: { reduced: boolean; className
     const primary = readVar('--primary', '#00ff41');
     const accent = readVar('--accent', '#9dffb5');
     const font = `500 13px ${readVar('--font-mono', 'monospace')}`;
+    // Phones/tablets: no hover, weaker GPUs. Skip canvas blur (expensive) and lower resolution.
+    const touch = window.matchMedia('(hover: none)').matches;
+    const glow = !touch;
 
     let width = 0;
     let height = 0;
@@ -51,7 +54,7 @@ export function BinaryRain({ reduced, className }: { reduced: boolean; className
 
     const resize = () => {
       const rect = canvas.getBoundingClientRect();
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const dpr = Math.min(window.devicePixelRatio || 1, touch ? 1.5 : 2);
       width = rect.width;
       height = rect.height;
       canvas.width = Math.round(width * dpr);
@@ -91,11 +94,11 @@ export function BinaryRain({ reduced, className }: { reduced: boolean; className
             ctx.fillStyle = '#eaffee';
             ctx.globalAlpha = 0.9;
             ctx.shadowColor = primary;
-            ctx.shadowBlur = 8;
+            ctx.shadowBlur = glow ? 8 : 0;
           } else {
             ctx.fillStyle = near > 0.15 ? accent : primary;
             ctx.globalAlpha = Math.min(1, fade * 0.55 + near * 0.8);
-            ctx.shadowBlur = near > 0.3 ? 10 * near : 0;
+            ctx.shadowBlur = glow && near > 0.3 ? 10 * near : 0;
             ctx.shadowColor = accent;
           }
           ctx.fillText(grid[c][r], x, y);
@@ -145,10 +148,20 @@ export function BinaryRain({ reduced, className }: { reduced: boolean; className
     let last = 0;
     let visible = true;
 
+    // With no finger on screen, a glow point drifts through the rain so touch users still see it react.
+    let lastInput = -Infinity;
+    const wander = (t: number) => {
+      if (!touch || t - lastInput < 2500) return;
+      const s = t / 1000;
+      pointer.x = width * (0.5 + 0.38 * Math.sin(s * 0.45));
+      pointer.y = height * (0.45 + 0.3 * Math.sin(s * 0.7 + 1));
+    };
+
     const loop = (t: number) => {
       raf = requestAnimationFrame(loop);
       if (t - last < FRAME_MS) return;
       last = t;
+      wander(t);
       step();
       draw();
     };
@@ -180,10 +193,20 @@ export function BinaryRain({ reduced, className }: { reduced: boolean; className
       pointer.x = -9999;
       pointer.y = -9999;
     };
+    const onTouch = (e: TouchEvent) => {
+      const t = e.touches[0];
+      if (!t) return;
+      lastInput = performance.now();
+      const rect = canvas.getBoundingClientRect();
+      pointer.x = t.clientX - rect.left;
+      pointer.y = t.clientY - rect.top;
+    };
 
     document.addEventListener('visibilitychange', onVisibility);
     window.addEventListener('pointermove', onPointer, { passive: true });
     document.addEventListener('pointerleave', onLeave);
+    window.addEventListener('touchstart', onTouch, { passive: true });
+    window.addEventListener('touchmove', onTouch, { passive: true });
     start();
 
     return () => {
@@ -193,6 +216,8 @@ export function BinaryRain({ reduced, className }: { reduced: boolean; className
       document.removeEventListener('visibilitychange', onVisibility);
       window.removeEventListener('pointermove', onPointer);
       document.removeEventListener('pointerleave', onLeave);
+      window.removeEventListener('touchstart', onTouch);
+      window.removeEventListener('touchmove', onTouch);
     };
   }, [reduced]);
 

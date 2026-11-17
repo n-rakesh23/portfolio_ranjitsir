@@ -64,12 +64,21 @@ export function MorphOverlay({ phase, from, to, k }: Props) {
     }),
   };
 
-  const edge: Variants = {
-    idle: { borderColor: from.primary, boxShadow: `0 0 0px ${from.primary}` },
-    expand: { borderColor: from.primary, boxShadow: `0 0 28px ${from.primary}`, transition: { duration: 0.3 * k } },
-    merge: { borderColor: to.primary, boxShadow: `0 0 48px ${to.primary}`, transition: { duration: 0.3 * k } },
-    release: { borderColor: to.primary, boxShadow: `0 0 18px ${to.primary}`, transition: { duration: 0.2 * k } },
+  // Edge glows are static layers that only fade (opacity is GPU-composited). Animating
+  // box-shadow/border-colour repaints full-height layers every frame and stutters on phones.
+  const fromEdge: Variants = {
+    idle: { opacity: 0 },
+    expand: { opacity: 1, transition: { duration: 0.2 * k } },
+    merge: { opacity: 0, transition: { duration: 0.3 * k, delay: 0.1 * k } },
+    release: { opacity: 0 },
   };
+  const toEdge: Variants = {
+    idle: { opacity: 0 },
+    expand: { opacity: 0 },
+    merge: { opacity: 1, transition: { duration: 0.3 * k, delay: 0.1 * k } },
+    release: { opacity: 0.5, transition: { duration: 0.2 * k } },
+  };
+  const edgeStyle = (c: string) => ({ borderColor: c, boxShadow: `0 0 32px ${c}, inset 0 0 16px ${c}55` });
 
   // The new identity tears open from the energy line (blocks share a vertical centre once merged).
   const toLayer: Variants = {
@@ -91,13 +100,7 @@ export function MorphOverlay({ phase, from, to, k }: Props) {
           className="absolute top-0 h-[100vh] w-[60vw] will-change-transform"
           style={{ left: b.left, skewX: -12 }}
         >
-          <motion.div
-            variants={edge}
-            initial="idle"
-            animate={target}
-            className="absolute inset-0 overflow-hidden border-x-2"
-            style={{ background: from.surface }}
-          >
+          <div className="absolute inset-0 overflow-hidden" style={{ background: from.surface }}>
             {/* Binary grain from the outgoing identity. */}
             <div
               className="absolute -inset-8 break-all font-mono text-[11px] leading-[14px] tracking-[0.3em]"
@@ -113,7 +116,9 @@ export function MorphOverlay({ phase, from, to, k }: Props) {
               className="absolute inset-0 origin-center"
               style={{ background: `linear-gradient(160deg, ${to.surface}, ${to.bg})` }}
             />
-          </motion.div>
+          </div>
+          <motion.div variants={fromEdge} initial="idle" animate={target} className="absolute inset-0 border-x-2" style={edgeStyle(from.primary)} />
+          <motion.div variants={toEdge} initial="idle" animate={target} className="absolute inset-0 border-x-2" style={edgeStyle(to.primary)} />
         </motion.div>
       ))}
 

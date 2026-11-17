@@ -13,7 +13,7 @@ function Row({ text, reverse }: { text: string; reverse?: boolean }) {
         {track.map((b, i) => (
           <span key={i} className="group relative inline-flex flex-col items-center px-2">
             <span className="transition-colors duration-200 group-hover:text-primary">{b.bits}</span>
-            <span className="pointer-events-none absolute -top-5 font-display text-xs font-semibold text-accent opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+            <span className="marquee-label pointer-events-none absolute -top-5 font-display text-xs font-semibold text-accent opacity-0 transition-opacity duration-200 group-hover:opacity-100">
               {b.ch === ' ' ? '␠' : b.ch}
             </span>
           </span>

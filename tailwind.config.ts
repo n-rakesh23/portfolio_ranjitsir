@@ -2,6 +2,8 @@ import type { Config } from 'tailwindcss';
 
 export default {
   content: ['./index.html', './src/**/*.{ts,tsx}'],
+  // hover: styles apply only on devices that can hover, so taps on phones don't leave cards stuck lifted.
+  future: { hoverOnlyWhenSupported: true },
   theme: {
     container: {
       center: true,
