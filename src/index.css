@@ -230,6 +230,19 @@
       background-repeat: no-repeat;
       animation: card-sheen 7s ease-in-out infinite;
     }
+    /* Pressing a card = the desktop hover: lift, glow border, spotlight under the finger. */
+    html[data-mode='engineer'] .card-spotlight:active {
+      background-image: radial-gradient(
+        300px circle at var(--mx, 50%) var(--my, 50%),
+        rgba(0, 255, 65, 0.16),
+        transparent 65%
+      );
+      animation: none;
+    }
+    .card-spotlight:active {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+    }
   }
 
   /* Faint CRT-style scanlines layered over the hero rain. */

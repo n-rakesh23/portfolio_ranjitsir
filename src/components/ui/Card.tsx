@@ -29,6 +29,8 @@ export function Card({ interactive, className, onPointerMove, onPointerLeave, ..
         className,
       )}
       onPointerMove={interactive ? track : onPointerMove}
+      // Touch screens fire no hover moves: place the glow where the finger lands.
+      onPointerDown={interactive ? track : rest.onPointerDown}
       onPointerLeave={interactive ? reset : onPointerLeave}
       {...rest}
     />

@@ -80,7 +80,7 @@ export default function ModeSwitch({ className }: { className?: string }) {
               key={opt.mode}
               aria-hidden="true"
               className={cn(
-                'relative flex h-full flex-1 items-center justify-center gap-1.5 px-3 text-sm font-medium transition-colors duration-150',
+                'relative flex h-full flex-1 items-center justify-center gap-1 px-2.5 text-xs font-medium transition-colors sm:gap-1.5 sm:px-3 sm:text-sm duration-150',
                 active ? 'text-primary-contrast' : 'text-text-muted',
               )}
             >
@@ -91,13 +91,13 @@ export default function ModeSwitch({ className }: { className?: string }) {
                   transition={reduced ? { duration: 0 } : { duration: 0.35, ease: EASE }}
                 />
               )}
-              <span className="relative flex items-center gap-1.5">
+              <span className="relative flex items-center gap-1 sm:gap-1.5">
                 {opt.mode === 'engineer' ? (
                   <span className="font-mono text-xs leading-none">&lt;/&gt;</span>
                 ) : (
                   <Icon name={opt.icon} size={14} />
                 )}
-                <span className="hidden sm:inline">{content.modeSwitch[opt.labelKey]}</span>
+                <span>{content.modeSwitch[opt.labelKey]}</span>
               </span>
             </span>
           );
