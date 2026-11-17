@@ -7,8 +7,9 @@ export const shared: SharedContent = {
   initials: 'RK',
   email: 'hello@ranjitkumar.example',
   location: 'Bengaluru, India',
-  siteUrl: 'https://ranjitkumar.example',
-  cvUrl: '/ranjit-kumar-cv.pdf',
+  // Must end with '/' so relative paths resolve inside the sub-folder.
+  siteUrl: 'https://n-rakesh23.github.io/portfolio_ranjitsir/',
+  cvUrl: `${import.meta.env.BASE_URL}ranjit-kumar-cv.pdf`,
   socials: [
     { platform: 'linkedin', label: 'LinkedIn', url: 'https://www.linkedin.com/in/example' },
     { platform: 'github', label: 'GitHub', url: 'https://github.com/example' },

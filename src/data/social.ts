@@ -44,7 +44,7 @@ export const social: ModeContent = {
     title: `${shared.name} — Social Worker & Community Builder`,
     description:
       'Ten years in the field building communities that last: education, health, livelihood and digital literacy across rural Karnataka.',
-    ogImage: '/og-social.png',
+    ogImage: 'og-social.png',
   },
   nav: [
     { id: 'about', label: 'Story', href: '#about' },

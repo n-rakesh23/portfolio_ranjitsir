@@ -6,10 +6,11 @@ import type { Mode } from '../../data/types';
 // Browser chrome colour; mirrors --bg in index.css (meta tags can't read CSS variables).
 const THEME_COLOR: Record<Mode, string> = { engineer: '#020804', social: '#FBF7F0' };
 
-const absolute = (path: string) => new URL(path, shared.siteUrl).toString();
+/** Resolves a path relative to the site root (siteUrl ends with '/', so sub-folder hosting works). */
+const absolute = (path: string) => new URL(path.replace(/^\//, ''), shared.siteUrl).toString();
 
 function pageUrl(mode: Mode) {
-  return absolute(mode === 'social' ? '/?mode=social' : '/');
+  return absolute(mode === 'social' ? '?mode=social' : '');
 }
 
 export default function Seo({ mode }: { mode: Mode }) {
@@ -21,7 +22,7 @@ export default function Seo({ mode }: { mode: Mode }) {
     '@context': 'https://schema.org',
     '@type': 'Person',
     name: shared.name,
-    url: absolute('/'),
+    url: absolute(''),
     image: absolute(getContent('engineer').seo.ogImage),
     email: `mailto:${shared.email}`,
     jobTitle: [getContent('engineer').seo.title, getContent('social').seo.title].map((t) =>

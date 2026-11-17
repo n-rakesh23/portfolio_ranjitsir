@@ -12,7 +12,7 @@ export const engineer: ModeContent = {
     title: `${shared.name} — Software Engineer & Architect`,
     description:
       '20 years building systems that scale: platform architecture, cloud, data and engineering leadership.',
-    ogImage: '/og-engineer.png',
+    ogImage: 'og-engineer.png',
   },
   nav: [
     { id: 'about', label: 'About', href: '#about' },

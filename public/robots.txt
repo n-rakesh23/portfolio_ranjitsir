@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://ranjitkumar.example/sitemap.xml
+Sitemap: https://n-rakesh23.github.io/portfolio_ranjitsir/sitemap.xml

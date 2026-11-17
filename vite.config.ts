@@ -8,6 +8,8 @@ const vendorChunks: Record<string, RegExp> = {
 };
 
 export default defineConfig({
+  // GitHub Pages serves the site from /<repo>/; the deploy workflow sets BASE_PATH. Netlify/Vercel use '/'.
+  base: process.env.BASE_PATH || '/',
   plugins: [react()],
   build: {
     rollupOptions: {
