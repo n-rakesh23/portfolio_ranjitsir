@@ -1,9 +1,9 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
+import { useCallback, useEffect, useState } from 'react';
 import { shared } from '../../data';
 import type { Mode } from '../../data/types';
 import { useMode } from '../../hooks/useMode';
+import { useModeTransition } from '../../hooks/useModeTransition';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { cn } from '../../lib/cn';
 import { DURATION, EASE } from '../../lib/motion';
@@ -16,24 +16,6 @@ const OPTIONS: { mode: Mode; labelKey: 'engineerLabel' | 'socialLabel'; icon: 'c
 
 const TOOLTIP_KEY = 'mode-tooltip-dismissed';
 
-interface Reveal {
-  x: number;
-  y: number;
-  radius: number;
-  color: string;
-  next: Mode;
-}
-
-/** Reads the target mode's --bg by flipping data-mode synchronously (no paint happens in between). */
-function readModeBg(next: Mode): string {
-  const root = document.documentElement;
-  const prev = root.dataset.mode;
-  root.dataset.mode = next;
-  const color = getComputedStyle(root).getPropertyValue('--bg').trim();
-  if (prev) root.dataset.mode = prev;
-  return color;
-}
-
 function readDismissed(): boolean {
   try {
     return window.localStorage.getItem(TOOLTIP_KEY) === '1';
@@ -43,11 +25,9 @@ function readDismissed(): boolean {
 }
 
 export default function ModeSwitch({ className }: { className?: string }) {
-  const { mode, setMode, content } = useMode();
+  const { mode, content } = useMode();
   const reduced = useReducedMotion();
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  const [reveal, setReveal] = useState<Reveal | null>(null);
-  const [covering, setCovering] = useState(false);
+  const { start, prefetch, busy } = useModeTransition();
   const [showTooltip, setShowTooltip] = useState(false);
 
   const dismissTooltip = useCallback(() => {
@@ -70,41 +50,27 @@ export default function ModeSwitch({ className }: { className?: string }) {
   }, [dismissTooltip]);
 
   const toggle = () => {
-    if (reveal) return;
+    if (busy) return;
     if (showTooltip) dismissTooltip();
-    const next: Mode = mode === 'engineer' ? 'social' : 'engineer';
-    const btn = buttonRef.current;
-
-    if (reduced || !btn) {
-      setMode(next);
-      return;
-    }
-
-    const rect = btn.getBoundingClientRect();
-    const x = rect.left + rect.width / 2;
-    const y = rect.top + rect.height / 2;
-    const radius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
-    setCovering(true);
-    setReveal({ x, y, radius, color: readModeBg(next), next });
+    start(mode === 'engineer' ? 'social' : 'engineer');
   };
 
-  const onRevealComplete = () => {
-    if (!reveal || !covering) return;
-    setMode(reveal.next);
-    setCovering(false);
-  };
+  const other: Mode = mode === 'engineer' ? 'social' : 'engineer';
+  const warm = () => prefetch(other);
 
   const checked = mode === 'social';
 
   return (
     <div className={cn('relative', className)}>
       <button
-        ref={buttonRef}
         type="button"
         role="switch"
         aria-checked={checked}
         aria-label={content.modeSwitch.ariaLabel}
         onClick={toggle}
+        onPointerEnter={warm}
+        onFocus={warm}
+        onTouchStart={warm}
         className="relative flex h-11 items-center rounded-full border border-border bg-surface p-1 shadow-theme sm:w-[220px]"
       >
         {OPTIONS.map((opt) => {
@@ -161,27 +127,6 @@ export default function ModeSwitch({ className }: { className?: string }) {
         )}
       </AnimatePresence>
 
-      {reveal &&
-        createPortal(
-          <motion.div
-            aria-hidden="true"
-            className="pointer-events-none fixed inset-0 z-[100]"
-            style={{ backgroundColor: reveal.color }}
-            initial={{ clipPath: `circle(0px at ${reveal.x}px ${reveal.y}px)`, opacity: 1 }}
-            animate={
-              covering
-                ? { clipPath: `circle(${reveal.radius}px at ${reveal.x}px ${reveal.y}px)`, opacity: 1 }
-                : { clipPath: `circle(${reveal.radius}px at ${reveal.x}px ${reveal.y}px)`, opacity: 0 }
-            }
-            transition={
-              covering
-                ? { duration: DURATION.modeSwitch, ease: EASE }
-                : { duration: 0.25, ease: 'linear', delay: 0.05 }
-            }
-            onAnimationComplete={covering ? onRevealComplete : () => setReveal(null)}
-          />,
-          document.body,
-        )}
     </div>
   );
 }

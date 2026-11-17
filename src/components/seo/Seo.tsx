@@ -4,7 +4,7 @@ import { getContent } from '../../data';
 import type { Mode } from '../../data/types';
 
 // Browser chrome colour; mirrors --bg in index.css (meta tags can't read CSS variables).
-const THEME_COLOR: Record<Mode, string> = { engineer: '#0B1020', social: '#FBF7F0' };
+const THEME_COLOR: Record<Mode, string> = { engineer: '#020804', social: '#FBF7F0' };
 
 const absolute = (path: string) => new URL(path, shared.siteUrl).toString();
 

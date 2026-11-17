@@ -10,14 +10,14 @@ export function ConnectorLine() {
 
   return (
     <div className="mx-auto mb-10 flex max-w-xl items-center gap-3" aria-hidden="true">
-      <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-[#24304F] bg-[#0B1020] text-[#38BDF8]">
+      <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-[#14391F] bg-[#020804] text-[#00FF41]">
         <Icon name="code" size={22} />
       </span>
       <svg viewBox="0 0 400 24" preserveAspectRatio="none" className="h-6 flex-1 overflow-visible">
         <defs>
           <linearGradient id={gradientId} x1="0" x2="1" y1="0" y2="0">
-            <stop offset="0%" stopColor="#38BDF8" />
-            <stop offset="50%" stopColor="#A78BFA" />
+            <stop offset="0%" stopColor="#00FF41" />
+            <stop offset="50%" stopColor="#9DFFB5" />
             <stop offset="100%" stopColor="#C2553A" />
           </linearGradient>
         </defs>

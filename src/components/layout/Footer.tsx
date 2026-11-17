@@ -1,12 +1,14 @@
 import { ArrowUp, Repeat } from 'lucide-react';
 import { shared } from '../../data';
 import { useMode } from '../../hooks/useMode';
+import { useModeTransition } from '../../hooks/useModeTransition';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { Button, Container, Icon } from '../ui';
 import { FooterMonogram } from './footer/FooterMonogram';
 
 export default function Footer() {
-  const { mode, content, toggleMode } = useMode();
+  const { mode, content } = useMode();
+  const { start } = useModeTransition();
   const reduced = useReducedMotion();
   const { footer, nav, labels } = content;
   const year = new Date().getFullYear();
@@ -14,8 +16,8 @@ export default function Footer() {
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' });
 
   const switchSides = () => {
-    toggleMode();
-    scrollToTop();
+    // Jump to the top while the transition covers the screen, so the new mode opens on its hero.
+    start(mode === 'engineer' ? 'social' : 'engineer', { onSwap: () => window.scrollTo({ top: 0, behavior: 'auto' }) });
   };
 
   return (

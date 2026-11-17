@@ -3,7 +3,7 @@ import type { SharedContent } from './types';
 
 // TODO: replace with client content
 export const shared: SharedContent = {
-  name: 'Ranjit Kumar',
+  name: 'Ranjit Kumar Swain',
   initials: 'RK',
   email: 'hello@ranjitkumar.example',
   location: 'Bengaluru, India',
@@ -17,8 +17,8 @@ export const shared: SharedContent = {
     { platform: 'instagram', label: 'Instagram', url: 'https://www.instagram.com/example' },
   ],
   photos: {
-    engineer: placeholder('Portrait — formal', 'Ranjit Kumar in a formal shirt, smiling at the camera', 800, 1000, 'engineer'),
-    social: placeholder('Portrait — field', 'Ranjit Kumar talking with villagers outside a community centre', 800, 1000, 'social'),
+    engineer: placeholder('Portrait — formal', 'Ranjit Kumar Swain in a formal shirt, smiling at the camera', 800, 1000, 'engineer'),
+    social: placeholder('Portrait — field', 'Ranjit Kumar Swain talking with villagers outside a community centre', 800, 1000, 'social'),
   },
   tagline: 'Engineer by training. Social worker by choice.',
   firstVisitTooltip: 'Switch to see my other world →',

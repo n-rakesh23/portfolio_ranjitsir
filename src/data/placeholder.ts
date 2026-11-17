@@ -3,7 +3,7 @@ import type { ImageAsset } from './types';
 type Tone = 'engineer' | 'social';
 
 const palettes: Record<Tone, { bg: string; fg: string; accent: string }> = {
-  engineer: { bg: '#121A2F', fg: '#8A96B0', accent: '#38BDF8' },
+  engineer: { bg: '#06120A', fg: '#74A882', accent: '#00FF41' },
   social: { bg: '#F3ECE0', fg: '#6E625A', accent: '#C2553A' },
 };
 

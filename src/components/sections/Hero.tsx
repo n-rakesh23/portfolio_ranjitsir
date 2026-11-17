@@ -8,6 +8,8 @@ import { cn } from '../../lib/cn';
 import { BlobPortrait } from './hero/BlobPortrait';
 import { HeroTitle } from './hero/HeroTitle';
 import { TerminalCard } from './hero/TerminalCard';
+import { BinaryRain } from '../effects/BinaryRain';
+import { DecodeText } from '../effects/DecodeText';
 
 export default function Hero() {
   const { mode, content } = useMode();
@@ -41,7 +43,7 @@ export default function Hero() {
         >
           <div className={cn(!isEngineer && 'order-2 md:order-1')}>
             <motion.p variants={item} className="eyebrow mb-5">
-              {hero.eyebrow}
+              {isEngineer ? <DecodeText text={hero.eyebrow} delay={250} /> : hero.eyebrow}
             </motion.p>
             <motion.div variants={item} id="hero-title">
               <HeroTitle title={hero.title} highlight={hero.highlightWord} mode={mode} />
@@ -104,6 +106,12 @@ function HeroBackground({ engineer, reduced }: { engineer: boolean; reduced: boo
     return (
       <div aria-hidden className="pointer-events-none absolute inset-0">
         <div className="dot-grid absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_80%)]" />
+        <BinaryRain
+          reduced={reduced}
+          className="absolute inset-0 opacity-60 [mask-image:radial-gradient(ellipse_at_70%_50%,black_20%,transparent_75%)]"
+        />
+        <div className="scanlines absolute inset-0" />
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-bg to-transparent" />
         <motion.div
           className="absolute left-1/2 top-1/3 h-[36rem] w-[36rem] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-25 blur-3xl"
           style={{ background: 'radial-gradient(circle, var(--primary), var(--accent) 50%, transparent 70%)' }}

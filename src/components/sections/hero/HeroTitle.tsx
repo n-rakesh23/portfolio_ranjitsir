@@ -15,7 +15,7 @@ export function HeroTitle({ title, highlight, mode }: { title: string; highlight
     <h1>
       {before}
       {mode === 'engineer' ? (
-        <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">{highlight}</span>
+        <span className="gradient-pan bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">{highlight}</span>
       ) : (
         <span className="relative inline-block whitespace-nowrap">
           {highlight}
