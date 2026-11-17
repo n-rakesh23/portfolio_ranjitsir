@@ -1,0 +1,205 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root,
+  html[data-mode='engineer'] {
+    color-scheme: dark;
+    --bg: #0b1020;
+    --surface: #121a2f;
+    --surface-2: #1a2440;
+    --border: #24304f;
+    --text: #e6eaf2;
+    --text-muted: #8a96b0;
+    --primary: #38bdf8;
+    --primary-strong: #38bdf8;
+    --primary-contrast: #0b1020;
+    --accent: #a78bfa;
+    --success: #34d399;
+    --warm: #a78bfa;
+    --error: #f87171;
+    --caution: #fbbf24;
+
+    --font-display: 'Space Grotesk', system-ui, sans-serif;
+    --font-body: 'IBM Plex Sans', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+    --radius: 6px;
+    --shadow: 0 0 0 1px var(--border), 0 8px 30px rgba(56, 189, 248, 0.08);
+    --shadow-hover: 0 0 0 1px var(--primary), 0 12px 40px rgba(56, 189, 248, 0.18);
+
+    --nav-height: 72px;
+    --section-py: 64px;
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  html[data-mode='social'] {
+    color-scheme: light;
+    --bg: #fbf7f0;
+    --surface: #ffffff;
+    --surface-2: #f3ece0;
+    --border: #e6dccb;
+    --text: #2b2420;
+    --text-muted: #6e625a;
+    --primary: #c2553a;
+    --primary-strong: #a3452d;
+    --primary-contrast: #ffffff;
+    --accent: #5e8c6a;
+    --success: #5e8c6a;
+    --warm: #e9a84c;
+    --error: #b42318;
+    --caution: #e9a84c;
+
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body: 'Source Sans 3', system-ui, sans-serif;
+    --font-mono: 'Source Sans 3', system-ui, sans-serif;
+
+    --radius: 20px;
+    --shadow: 0 10px 30px rgba(43, 36, 32, 0.08);
+    --shadow-hover: 0 16px 40px rgba(43, 36, 32, 0.14);
+  }
+
+  @media (min-width: 768px) {
+    :root {
+      --section-py: 96px;
+    }
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition:
+      background-color 150ms linear,
+      color 150ms linear;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    color: var(--text);
+    font-weight: 600;
+    margin: 0;
+  }
+
+  h1 {
+    font-size: 3.5rem;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    font-size: 2rem;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+    line-height: 1.3;
+  }
+
+  @media (min-width: 768px) {
+    h1 {
+      font-size: 4.5rem;
+    }
+    h2 {
+      font-size: 2.5rem;
+    }
+  }
+
+  html[data-mode='engineer'] h1,
+  html[data-mode='engineer'] h2 {
+    font-weight: 700;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  img {
+    max-width: 100%;
+    display: block;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background-color: var(--primary);
+    color: var(--primary-contrast);
+  }
+}
+
+@layer components {
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    letter-spacing: 0.02em;
+    color: var(--primary-strong);
+  }
+
+  html[data-mode='social'] .eyebrow {
+    font-style: italic;
+    font-size: 1rem;
+    letter-spacing: 0;
+  }
+}
+
+@layer utilities {
+  .dot-grid {
+    background-image: radial-gradient(circle at 1px 1px, rgba(138, 150, 176, 0.18) 1px, transparent 0);
+    background-size: 24px 24px;
+  }
+
+  .paper-texture {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.17 0 0 0 0 0.14 0 0 0 0 0.12 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .sr-only-focusable:not(:focus):not(:focus-within) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 150ms !important;
+    scroll-behavior: auto !important;
+  }
+}

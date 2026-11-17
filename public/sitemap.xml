@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- TODO: replace ranjitkumar.example with the live domain (keep in sync with shared.siteUrl and robots.txt) -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://ranjitkumar.example/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://ranjitkumar.example/?mode=social</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+</urlset>
